@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"path"
+	"path/filepath"
 )
 
 var logger = log.New(os.Stderr, "", log.Lshortfile|log.LstdFlags)
@@ -12,8 +12,8 @@ var logger = log.New(os.Stderr, "", log.Lshortfile|log.LstdFlags)
 func LogInit(logpath string) error {
 
 	os.Mkdir(logpath, 0666)
-	_, file := path.Split(os.Args[0])
-	s := fmt.Sprintf("%s/%s.log", logpath, file)
+
+	s := fmt.Sprintf("%s/%s.log", logpath, filepath.Base(os.Args[0]))
 
 	w, err := os.OpenFile(s, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0x666)
 	if err != nil {
@@ -51,6 +51,17 @@ func Print(v ...interface{}) {
 func Printf(format string, v ...interface{}) {
 	logger.Output(2, fmt.Sprintf(format, v...))
 }
+func Fatal(v ...interface{}) {
+	logger.Output(2, fmt.Sprint(v...))
+	os.Exit(1)
+}
+
+// Fatalf is equivalent to Printf() followed by a call to os.Exit(1).
+func Fatalf(format string, v ...interface{}) {
+	logger.Output(2, fmt.Sprintf(format, v...))
+	os.Exit(1)
+}
+
 func SetFlags(flag int) {
 	logger.SetFlags(flag)
 }
