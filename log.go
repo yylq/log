@@ -151,7 +151,7 @@ func Debug(v ...interface{}) {
 		if logObj != nil {
 			logObj.lg.Output(2, "[debug]"+fmt.Sprintln(v...))
 		}
-		console("debug", v...)
+		console("[debug]", v...)
 	}
 }
 func Info(v ...interface{}) {
